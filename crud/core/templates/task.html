@@ -1,0 +1,8 @@
+<h1>List Task</h1>
+{%for post in posts%}
+  {{post.nameTask}}
+  {{post.publishedTask}}
+  <br>
+{%endfor%}
+<br>
+<a href="{%url 'crud:create'%}">Create Task</a>
