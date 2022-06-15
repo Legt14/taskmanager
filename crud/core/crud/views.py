@@ -1,8 +1,14 @@
-from django.shortcuts import redirect, render
-from django.views import View
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic.edit import View, DeleteView
 from .forms import FormCreateTask
 from .models import TaskPost
+from django.urls import reverse_lazy
 # Create your views here.
+
+class BaseView(View):
+    def get(self, request, *args, **kwargs):
+
+        return render(request, 'base.html')
 
 class Task(View):
     def get(self, request, *args, **kwargs):
@@ -32,3 +38,18 @@ class CreateTask(View):
         context = {}
         
         return render(request, "createTask.html", context)
+
+class DetailTask(View):
+    def get(self, request, pk, *args, **kwargs):
+        post = get_object_or_404(TaskPost, pk=pk)
+        context = {
+            'post':post
+        }
+        return render(request, 'detailTask.html', context)
+
+
+
+class DeleteTask(DeleteView):
+    model = TaskPost
+    template_name = 'deleteTask.html'
+    success_url = reverse_lazy('crud:task')
